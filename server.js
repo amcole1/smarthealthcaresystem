@@ -20,6 +20,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
 const uri = process.env.MONGO_DB_URI;
 const client = new MongoClient(uri, {
+  tls:true,
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
