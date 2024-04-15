@@ -1,0 +1,106 @@
+/* General Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+/* Container Styles */
+.container, .profile-container {
+    max-width: 300px;
+    margin: auto;
+    text-align: center; 
+}
+
+/* Form Styles */
+form {
+    margin-bottom: 20px;
+}
+
+/* Input and Button Styles */
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+/* Button Specific Styles */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Profile Columns Styles */
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 20px; 
+}
+
+.column {
+    flex: 1; 
+    padding: 0 15px; 
+    box-sizing: border-box; 
+    min-width: 280px; 
+}
+
+.column h3 {
+    text-align: center;
+    margin-bottom: 15px; 
+}
+
+.edit-button {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 20px; 
+}
+
+
+@media (max-width: 900px) {
+    .column {
+        flex-basis: 100%; 
+        margin-bottom: 20px;
+    }
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.columns-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1200px; 
+}
+
+.column {
+    flex: 1; 
+    margin: 0 10px; 
+}
+
+.edit-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px; 
+    background-color: #007bff; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px; 
+    text-align: center;
+}
+
+.edit-button:hover {
+    background-color: #0056b3; 
+}
+
+

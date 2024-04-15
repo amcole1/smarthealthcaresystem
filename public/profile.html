@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <h2>User Profile</h2>
+    <div class="profile-section" id="userInfoSection">
+        <h3>User Information</h3>
+        <div id="userInfoDisplay"></div>
+    </div>
+    <div class="profile-section" id="allergiesSection">
+        <h3>Allergies</h3>
+        <div id="allergiesDisplay">No allergies listed.</div>
+    </div>
+    <div class="profile-section" id="medicationsSection">
+        <h3>Medications</h3>
+        <div id="medicationsDisplay">No medications listed.</div>
+    </div>
+    <div class="profile-section">
+        <button class="edit-button" id="editProfileButton">Edit Profile</button>
+    </div>
+
+    <!-- Modal.. maybe -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modalTitle">Edit Profile</h2>
+            <div id="modalBody">
+                <!-- Information SHOULD dynamically load here-->
+            </div>
+            <div class="modal-footer">
+                <button onclick="submitForm()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>

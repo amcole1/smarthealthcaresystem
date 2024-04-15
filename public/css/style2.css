@@ -1,0 +1,69 @@
+
+body, h1, h2, h3, p, form {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.column, .edit-column {
+    margin-bottom: 20px;
+}
+
+.column label, .edit-column label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.column input[type="text"],
+.column input[type="number"],
+.edit-column input[type="text"],
+.edit-column input[type="number"],
+.edit-column textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.edit-button, .submit-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.edit-button:hover, .submit-button:hover {
+    background-color: #0056b3;
+}
+
+
+.edit-columns-container {
+    display: none; 
+}
+
+
