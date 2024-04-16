@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
+//comment
 const app = express();
 const PORT = process.env.PORT || 5000;
 
