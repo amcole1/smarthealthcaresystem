@@ -9,13 +9,6 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-console.log(`Attempting to listen on port: ${PORT}`);
-app.listen(PORT, () => {
-    console.log(`Server is successfully running on port ${PORT}`);
-}).on('error', err => {
-    console.error('Failed to start server:', err);
-});
-
 
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 
@@ -158,8 +151,10 @@ app.delete('/api/appointments/:id', authenticateToken, async (req, res) => {
     }
 });
 
-run().catch(console.dir);
+
 
 app.on('ready', () => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
+
+run().catch(console.dir);
