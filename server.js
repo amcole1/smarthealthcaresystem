@@ -94,19 +94,23 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
+const { ObjectId } = require('mongodb'); 
+
 app.get('/api/user', authenticateToken, async (req, res) => {
     try {
-        const collection = client.db('SE3Project').collection('smarthealthcaresystem'); // Adjust DB and collection names
-        const user = await collection.findOne({ _id: req.userId }, { projection: { password: 0 } });
+        const userId = new ObjectId(req.userId); 
+        const collection = client.db('SE3Project').collection('users');
+        const user = await collection.findOne({ _id: userId }, { projection: { password: 0 } });
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(404).json({ message: 'User not found' });
         }
         res.json(user);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server error');
+        console.error('Database query error:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 app.post('/api/appointments', authenticateToken, async (req, res) => {
     const { doctor, date, time } = req.body;
