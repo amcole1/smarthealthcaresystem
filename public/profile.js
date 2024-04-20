@@ -271,7 +271,7 @@ function addMedicationField() {
 
 function submitForm() {
     const allergies = Array.from(document.querySelectorAll('.allergyInput')).map(input => input.value);
-    const medications = Array.from(document.querySelectorAll('.medicationInput')).map(div => {
+    const medications = Array.from(document.querySelectorAll('.medicationField')).map(div => {
         return {
             name: div.querySelector('.medName').value,
             dosage: div.querySelector('.medDosage').value,
@@ -279,6 +279,7 @@ function submitForm() {
             prescribedDate: div.querySelector('.medPrescribedDate').value
         };
     });
+    
 
     const data = {
         userInfo: {
