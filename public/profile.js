@@ -28,40 +28,87 @@ function fetchUserData() {
     })
     .catch(error => console.error('Error fetching user data:', error));
 }
+// Old displayUserData function
+// function displayUserData(userData) {
+//     const userInfoDisplay = document.getElementById('userInfoDisplay');
+//     userInfoDisplay.innerHTML = `
+//         <p>First Name: ${userData.userInfo.firstName}</p>
+//         <p>Last Name: ${userData.userInfo.lastName}</p>
+//         <p>DOB: ${userData.userInfo.dob.month}/${userData.userInfo.dob.day}/${userData.userInfo.dob.year}</p>
+//         <p>Gender: ${userData.userInfo.gender}</p>
+//         <p>Address: ${userData.userInfo.address.streetNumber} ${userData.userInfo.address.streetName}, ${userData.userInfo.address.city}, ${userData.userInfo.address.state} ${userData.userInfo.address.zipCode}</p>
+//         <p>Phone Number: ${userData.userInfo.phoneNumber}</p>
+//     `;
 
+//     // Clear and update allergies display
+//     const allergiesDisplay = document.getElementById('allergiesDisplay');
+//     allergiesDisplay.innerHTML = userData.allergiesInfo.allergies.length > 0 
+//         ? userData.allergiesInfo.allergies.map(allergy => `<p>${allergy}</p>`).join('') 
+//         : '<p>No allergies listed.</p>';
+
+//     // Clear and update medications display
+//     const medicationsDisplay = document.getElementById('medicationsDisplay');
+//     if (userData.medicalInfo.medication.length > 0) {
+//         medicationsDisplay.innerHTML = userData.medicalInfo.medication.map(med => `
+//             <div>
+//                 <p>Name: ${med.name}</p>
+//                 <p>Dosage: ${med.dosage}</p>
+//                 <p>Frequency: ${med.frequency}</p>
+//                 <p>Prescribed Date: ${new Date(med.prescribedDate).toLocaleDateString()}</p>
+//             </div>
+//         `).join('');
+//     } else {
+//         medicationsDisplay.innerHTML = '<p>No medications listed.</p>';
+//     }
+    
+// }
+
+//New slightly updated displayUserData function
 function displayUserData(userData) {
+    console.log(userData); // Check what is received exactly.
+
+    if (!userData || !userData.userInfo) {
+        console.error('Invalid or incomplete user data received:', userData);
+        alert('Failed to load user data.');
+        return; // Handle missing data appropriately.
+    }
+
     const userInfoDisplay = document.getElementById('userInfoDisplay');
     userInfoDisplay.innerHTML = `
-        <p>First Name: ${userData.userInfo.firstName}</p>
-        <p>Last Name: ${userData.userInfo.lastName}</p>
-        <p>DOB: ${userData.userInfo.dob.month}/${userData.userInfo.dob.day}/${userData.userInfo.dob.year}</p>
-        <p>Gender: ${userData.userInfo.gender}</p>
-        <p>Address: ${userData.userInfo.address.streetNumber} ${userData.userInfo.address.streetName}, ${userData.userInfo.address.city}, ${userData.userInfo.address.state} ${userData.userInfo.address.zipCode}</p>
-        <p>Phone Number: ${userData.userInfo.phoneNumber}</p>
+        <p>First Name: ${userData.userInfo.firstName || 'N/A'}</p>
+        <p>Last Name: ${userData.userInfo.lastName || 'N/A'}</p>
+        <p>DOB: ${userData.userInfo.dob ? `${userData.userInfo.dob.month}/${userData.userInfo.dob.day}/${userData.userInfo.dob.year}` : 'N/A'}</p>
+        <p>Gender: ${userData.userInfo.gender || 'N/A'}</p>
+        <p>Address: ${userData.userInfo.address ? `${userData.userInfo.address.streetNumber} ${userData.userInfo.address.streetName}, ${userData.userInfo.address.city}, ${userData.userInfo.address.state} ${userData.userInfo.address.zipCode}` : 'N/A'}</p>
+        <p>Phone Number: ${userData.userInfo.phoneNumber || 'N/A'}</p>
     `;
 
-    // Clear and update allergies display
+    // Handle allergies
     const allergiesDisplay = document.getElementById('allergiesDisplay');
-    allergiesDisplay.innerHTML = userData.allergiesInfo.allergies.length > 0 
-        ? userData.allergiesInfo.allergies.map(allergy => `<p>${allergy}</p>`).join('') 
-        : '<p>No allergies listed.</p>';
+    if (userData.allergiesInfo && userData.allergiesInfo.allergies.length > 0) {
+        allergiesDisplay.innerHTML = userData.allergiesInfo.allergies.map(allergy => `<p>${allergy}</p>`).join('');
+    } else {
+        allergiesDisplay.innerHTML = '<p>No allergies listed.</p>';
+    }
 
-    // Clear and update medications display
+    // Handle medications
     const medicationsDisplay = document.getElementById('medicationsDisplay');
-    if (userData.medicalInfo.medication.length > 0) {
+    if (userData.medicalInfo && userData.medicalInfo.medication.length > 0) {
         medicationsDisplay.innerHTML = userData.medicalInfo.medication.map(med => `
             <div>
-                <p>Name: ${med.name}</p>
-                <p>Dosage: ${med.dosage}</p>
-                <p>Frequency: ${med.frequency}</p>
-                <p>Prescribed Date: ${new Date(med.prescribedDate).toLocaleDateString()}</p>
+                <p>Name: ${med.name || 'N/A'}</p>
+                <p>Dosage: ${med.dosage || 'N/A'}</p>
+                <p>Frequency: ${med.frequency || 'N/A'}</p>
+                <p>Prescribed Date: ${med.prescribedDate ? new Date(med.prescribedDate).toLocaleDateString() : 'N/A'}</p>
             </div>
         `).join('');
     } else {
         medicationsDisplay.innerHTML = '<p>No medications listed.</p>';
     }
-    
 }
+
+
+
 
 
 function openEditModal() {

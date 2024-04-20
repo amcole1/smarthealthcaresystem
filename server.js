@@ -87,25 +87,45 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+//Old Api/Login using MongoDb
+// app.post('/api/login', async (req, res) => {
+//     const { username, password } = req.body;
+//     try {
+//         const collection = client.db('SE3Project').collection('users');
+//         const user = await collection.findOne({ username });
+//         if (!user) {
+//             return res.status(401).send('User not found');
+//         }
+//         const isMatch = await bcrypt.compare(password, user.password);
+//         if (!isMatch) {
+//             return res.status(401).send('Invalid credentials');
+//         }
+//         const token = jwt.sign({ userId: user._id }, JWT_SECRET);
+//         res.json({ token });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Login failed');
+//     }
+// });
 
+// Using Mongoose to find the user during login instead of MongoDB
 app.post('/api/login', async (req, res) => {
-    const { username, password } = req.body;
-    try {
-        const collection = client.db('SE3Project').collection('users');
-        const user = await collection.findOne({ username });
-        if (!user) {
-            return res.status(401).send('User not found');
-        }
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).send('Invalid credentials');
-        }
-        const token = jwt.sign({ userId: user._id }, JWT_SECRET);
-        res.json({ token });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Login failed');
-    }
+  const { username, password } = req.body;
+  try {
+      const user = await User.findOne({ username });
+      if (!user) {
+          return res.status(401).send('User not found');
+      }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(401).send('Invalid credentials');
+      }
+      const token = jwt.sign({ userId: user._id }, JWT_SECRET);
+      res.json({ token });
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Login failed');
+  }
 });
 
 const authenticateToken = (req, res, next) => {
@@ -123,19 +143,35 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
+
+//Old MongoDB
+// app.get('/api/user', authenticateToken, async (req, res) => {
+//     try {
+//         const userId = new ObjectId(req.userId);
+//         const collection = client.db('SE3Project').collection('users');
+//         const user = await collection.findOne({ _id: userId }, { projection: { password: 0 } });
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+//         res.json(user);
+//     } catch (error) {
+//         console.error('Database query error:', error);
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// });
+
+// Using Mongoose to retrieve user details
 app.get('/api/user', authenticateToken, async (req, res) => {
-    try {
-        const userId = new ObjectId(req.userId);
-        const collection = client.db('SE3Project').collection('users');
-        const user = await collection.findOne({ _id: userId }, { projection: { password: 0 } });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        res.json(user);
-    } catch (error) {
-        console.error('Database query error:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
+  try {
+      const user = await User.findById(req.userId).select('-password'); // Excludes password from the result
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+      res.json(user);
+  } catch (error) {
+      console.error('Database query error:', error);
+      res.status(500).json({ message: 'Server error' });
+  }
 });
 
 app.post('/api/appointments', authenticateToken, async (req, res) => {
