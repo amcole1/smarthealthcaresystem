@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
+const User = require('./models/User');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
@@ -19,6 +21,10 @@ const client = new MongoClient(uri, {
     }
 });
 
+
+
+
+/* Using Mongo DB for this, not Mongoose. I think this is where some errors are. Keeping it just incase.
 async function run() {
     try {
         await client.connect();
@@ -29,10 +35,18 @@ async function run() {
         process.exit(1);
     }
 }
+*/
+// Using Mongoose now instead of MongoDB
+mongoose.connect(process.env.MONGO_DB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log('MongoDB connected'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+/* Old api/register
 app.post('/api/register', async (req, res) => {
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -49,6 +63,30 @@ app.post('/api/register', async (req, res) => {
         res.status(500).send('Error registering new user');
     }
 });
+*/ 
+
+// New Api/Register that pulls from the user model
+app.post('/api/register', async (req, res) => {
+  const { username, password, userInfo, medicalInfo, allergiesInfo } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+      const newUser = new User({
+          username,
+          password: hashedPassword,
+          userInfo,
+          medicalInfo,
+          allergiesInfo
+      });
+
+      await newUser.save();
+      res.status(201).send('User registered successfully');
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Error registering new user');
+  }
+});
+
 
 app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
