@@ -182,6 +182,29 @@ app.get('/api/user', authenticateToken, async (req, res) => {
   }
 });
 
+app.post('/api/user/update', authenticateToken, async (req, res) => {
+  const { userInfo, medicalInfo, allergiesInfo } = req.body;
+
+  try {
+      const updatedUser = await User.findByIdAndUpdate(req.userId, {
+          userInfo,
+          medicalInfo,
+          allergiesInfo
+      }, { new: true, runValidators: true });
+
+      if (!updatedUser) {
+          return res.status(404).send('User not found');
+      }
+      res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+  } catch (error) {
+      console.error('Error updating user profile:', error);
+      res.status(500).send('Failed to update profile');
+  }
+});
+
+
+
+
 app.post('/api/appointments', authenticateToken, async (req, res) => {
     const { doctor, date, time } = req.body;
     try {
