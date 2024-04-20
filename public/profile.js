@@ -13,6 +13,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 let currentUserData;
 
+//Old FetchUserData
+// function fetchUserData() {
+//     fetch('/api/user', {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+//         }
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         currentUserData = data;
+//         displayUserData(data);
+//     })
+//     .catch(error => console.error('Error fetching user data:', error));
+// }
+
+
+//New fetchUserData with additional logging.
 function fetchUserData() {
     fetch('/api/user', {
         method: 'GET',
@@ -23,11 +42,14 @@ function fetchUserData() {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Fetched User Data:', data);  // Log the fetched data
         currentUserData = data;
         displayUserData(data);
     })
     .catch(error => console.error('Error fetching user data:', error));
 }
+
+
 // Old displayUserData function
 // function displayUserData(userData) {
 //     const userInfoDisplay = document.getElementById('userInfoDisplay');
@@ -312,3 +334,6 @@ function submitForm() {
         alert('An error occurred while updating the profile.');
     });
 }
+
+
+

@@ -192,6 +192,8 @@ app.post('/api/user/update', authenticateToken, async (req, res) => {
           allergiesInfo
       }, { new: true, runValidators: true });
 
+      console.log('Updated User:', updatedUser);
+
       if (!updatedUser) {
           return res.status(404).send('User not found');
       }
@@ -201,6 +203,7 @@ app.post('/api/user/update', authenticateToken, async (req, res) => {
       res.status(500).send('Failed to update profile');
   }
 });
+
 
 
 
