@@ -38,11 +38,14 @@ async function run() {
 }
 */
 // Using Mongoose now instead of MongoDB
-mongoose.connect(process.env.MONGO_DB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+mongoose.connect(process.env.MONGO_DB_URI).then(() => {
+  console.log('MongoDB connected');
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}).catch(err => {
+  console.error('MongoDB connection error:', err);
+});
+
+
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
