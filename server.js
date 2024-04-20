@@ -222,4 +222,5 @@ app.on('ready', () => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
 
-run().catch(console.dir);
+// Old Code for MongoDB, commenting it out and not deleting it.
+//run().catch(console.dir);
