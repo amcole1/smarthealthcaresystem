@@ -13,14 +13,16 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
 const uri = process.env.MONGO_DB_URI;
 
-const client = new MongoClient(uri, {
-    tls: true,
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
+
+//Old Native Mongo DB connection
+// const client = new MongoClient(uri, {
+//     tls: true,
+//     serverApi: {
+//         version: ServerApiVersion.v1,
+//         strict: true,
+//         deprecationErrors: true,
+//     }
+// });
 
 
 
@@ -83,13 +85,15 @@ app.post('/api/register', async (req, res) => {
           allergiesInfo
       });
 
-      await newUser.save();
+      const savedUser = await newUser.save();
+      console.log('User registered successfully:', savedUser);
       res.status(201).send('User registered successfully');
   } catch (error) {
-      console.error(error);
+      console.error('Error registering new user:', error);
       res.status(500).send('Error registering new user');
   }
 });
+
 
 //Old Api/Login using MongoDb
 // app.post('/api/login', async (req, res) => {
