@@ -60,19 +60,24 @@ mongoose.connect(process.env.MONGO_DB_URI, {
   authSource: 'admin'
 }).then(() => {
   console.log('MongoDB connected');
-  // Trigger data insertion only once when the server starts
+
+  
   insertData().then(() => {
     console.log('Data inserted successfully');
-   
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    startServer();
   }).catch(error => {
     console.error('Failed to insert initial data:', error);
-    process.exit(1); 
+    process.exit(1);
   });
+
 }).catch(err => {
   console.error('MongoDB connection error:', err);
-  process.exit(1); 
+  process.exit(1);
 });
+
+function startServer() {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
