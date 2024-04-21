@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 const mongoose = require('mongoose');
+const Appointment = require('./models/Appointment');  // Ensure the path is correct
+
 
 const User = require('./models/User');
 
