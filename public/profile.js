@@ -334,6 +334,58 @@ function submitForm() {
         console.error('Error:', error);
         alert('An error occurred while updating the profile.');
     });
+
+
+    //Fetch booked appointments!
+    function fetchBookedAppointments() {
+        fetch('/api/user/appointments', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch appointments');
+          }
+          return response.json();
+        })
+        .then(appointments => {
+          displayBookedAppointments(appointments);
+        })
+        .catch(error => {
+          console.error('Error fetching booked appointments:', error);
+          alert('Failed to fetch booked appointments. Please check the console for more information.');
+        });
+      }
+      
+      function displayBookedAppointments(appointments) {
+        const appointmentsContainer = document.getElementById('appointmentsContainer');
+        if (!appointments.length) {
+          appointmentsContainer.innerHTML = '<p>No booked appointments.</p>';
+          return;
+        }
+      
+        appointmentsContainer.innerHTML = appointments.map(appointment => `
+          <div>
+            <p>Doctor: ${appointment.doctor.name}</p>
+            <p>Date: ${new Date(appointment.date).toLocaleDateString()}</p>
+            <p>Time: ${appointment.time}</p>
+          </div>
+        `).join('');
+      }
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        fetchUserData();
+        fetchBookedAppointments();
+        document.getElementById('editProfileButton').addEventListener('click', openEditModal);
+      });
+      
+
+
+
+
+
 }
 
 

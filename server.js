@@ -244,7 +244,7 @@ app.post('/api/appointments', authenticateToken, async (req, res) => {
 app.get('/api/appointments', authenticateToken, async (req, res) => {
   try {
       const appointments = await Appointment.find({ date: { $gte: new Date() } }) 
-          .populate('doctor') // Remove the stray slash here
+          .populate('doctor')
           .sort({ date: 1 });
       res.json(appointments);
   } catch (error) {
@@ -290,6 +290,25 @@ app.post('/api/appointments/book/:id', authenticateToken, async (req, res) => {
     res.status(500).send('Error booking appointment');
   }
 });
+
+// Get user's booked appointments.. finally!
+app.get('/api/user/appointments', authenticateToken, async (req, res) => {
+  try {
+    const userAppointments = await Appointment.find({ user: req.userId })
+      .populate('doctor')
+      .sort({ date: 1 });
+
+    if (!userAppointments) {
+      return res.status(404).json({ message: 'No appointments found for this user.' });
+    }
+
+    res.json(userAppointments);
+  } catch (error) {
+    console.error('Failed to retrieve appointments:', error);
+    res.status(500).send('Error retrieving user appointments');
+  }
+});
+
 
 
 // Old Code for MongoDB, commenting it out and not deleting it.
