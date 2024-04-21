@@ -1,30 +1,29 @@
 document.addEventListener('DOMContentLoaded', function () {
   const appointmentsDiv = document.getElementById('appointments');
-
+  console.log('Script loaded, attempting to fetch appointments...');
 
   fetchAppointments();
 
   async function fetchAppointments() {
     try {
-     
+      console.log('Sending request to fetch appointments...');
       const response = await fetch('/api/appointments', {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('jwt')
         }
       });
       if (!response.ok) {
-        throw new Error('Failed to fetch appointments');
+        throw new Error(`Failed to fetch appointments, status: ${response.status}`);
       }
       const appointments = await response.json();
+      console.log('Appointments fetched:', appointments);
       displayAppointments(appointments);
     } catch (error) {
       console.error('Error fetching appointments:', error);
-      appointmentsDiv.innerHTML = '<p>Error fetching appointments. Please ensure you are logged in.</p>';
+      appointmentsDiv.innerHTML = '<p>Error fetching appointments. Check console for details.</p>';
     }
   }
-  
 
-  // Function to display appointments
   function displayAppointments(appointments) {
     if (appointments.length === 0) {
       appointmentsDiv.innerHTML = '<p>No appointments available</p>';
@@ -34,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
     appointmentsDiv.innerHTML = '';
     appointments.forEach(appointment => {
       const appointmentElement = document.createElement('div');
+      appointmentElement.className = 'appointment';
       appointmentElement.innerHTML = `
         <p><strong>Doctor:</strong> ${appointment.doctor.name}</p>
         <p><strong>Date:</strong> ${new Date(appointment.date).toDateString()}</p>
@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-
   function bookAppointment(appointmentId) {
+    console.log(`Attempting to book appointment with ID: ${appointmentId}`);
     fetch(`/api/appointments/book/${appointmentId}`, {
       method: 'POST',
       headers: {
@@ -55,14 +55,18 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Failed to book appointment');
+        throw new Error(`Failed to book appointment, status: ${response.status}`);
       }
       return response.json();
     })
     .then(data => {
       console.log('Booking successful', data);
+      alert('Appointment booked successfully!');
       fetchAppointments(); // Refresh the list of appointments
     })
-    .catch(error => console.error('Error booking appointment:', error));
+    .catch(error => {
+      console.error('Error booking appointment:', error);
+      alert('Error booking appointment. Check console for details.');
+    });
   }
 });
