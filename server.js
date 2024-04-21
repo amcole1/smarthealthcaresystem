@@ -6,7 +6,10 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Appointment = require('./models/Appointment');  // Ensure the path is correct
-const Appointment = require('./models/Doctor'); 
+const Doctor = require('./models/Doctor'); 
+
+
+const insertData = require('./public/insertAppointments');
 
 const User = require('./models/User');
 
@@ -258,6 +261,9 @@ app.delete('/api/appointments/:id', authenticateToken, async (req, res) => {
 
 app.on('ready', () => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+    //ONE TIME
+    insertData();
 });
 
 
