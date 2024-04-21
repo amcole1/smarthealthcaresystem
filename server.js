@@ -5,11 +5,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 const mongoose = require('mongoose');
+
 const Appointment = require('./models/appointment'); 
 const Doctor = require('./models/doctor'); 
-
-
-
+//inserting starter information
 const insertData = require('./public/insertAppointments');
 
 const User = require('./models/User');
@@ -48,9 +47,20 @@ async function run() {
 // Using Mongoose now instead of MongoDB
 mongoose.connect(process.env.MONGO_DB_URI).then(() => {
   console.log('MongoDB connected');
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`)
+  );
 }).catch(err => {
   console.error('MongoDB connection error:', err);
+});
+
+
+//Trigget Data Insertion
+app.get('/init-db', (req, res) => {
+    insertData().then(() => {
+        res.send('Data inserted successfully');
+    }).catch(error => {
+        res.status(500).send('Failed to insert data: ' + error.message);
+    });
 });
 
 
@@ -264,7 +274,7 @@ app.on('ready', () => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
     //ONE TIME
-    insertData();
+    //insertData();
 });
 
 

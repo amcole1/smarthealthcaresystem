@@ -1,8 +1,6 @@
-// File: insertAppointments.js
-
 const mongoose = require('mongoose');
-const Doctor = require('./models/doctor');
-const Appointment = require('./models/appointment');
+const Doctor = require('../models/doctor');
+const Appointment = require('../models/appointment');
 
 async function insertData() {
     mongoose.connect('mongodb://localhost/SmartHealthCareSystem', {
