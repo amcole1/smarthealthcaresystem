@@ -4,10 +4,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   fetchAppointments();
 
-
   async function fetchAppointments() {
     try {
-      const response = await fetch('/api/appointments');
+     
+      const response = await fetch('/api/appointments', {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch appointments');
       }
@@ -15,9 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
       displayAppointments(appointments);
     } catch (error) {
       console.error('Error fetching appointments:', error);
-      appointmentsDiv.innerHTML = '<p>Error fetching appointments</p>';
+      appointmentsDiv.innerHTML = '<p>Error fetching appointments. Please ensure you are logged in.</p>';
     }
   }
+  
 
   // Function to display appointments
   function displayAppointments(appointments) {
