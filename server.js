@@ -205,36 +205,39 @@ app.post('/api/user/update', authenticateToken, async (req, res) => {
 });
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 app.post('/api/appointments', authenticateToken, async (req, res) => {
-    const { doctor, date, time } = req.body;
-    try {
-        const collection = client.db('SE3Project').collection('appointments');
-        const result = await collection.insertOne({ doctor, date, time, user: req.userId });
-        if (result.insertedId) {
-            res.status(201).send('Appointment created successfully');
-        } else {
-            throw new Error('Appointment creation failed');
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error creating appointment');
-    }
+  const { doctor, date, time } = req.body;
+  try {
+      const newAppointment = new Appointment({
+          doctor,
+          date,
+          time,
+          user: req.userId
+      });
+      const savedAppointment = await newAppointment.save();
+      res.status(201).json({ message: 'Appointment created successfully', appointment: savedAppointment });
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Error creating appointment');
+  }
 });
 
 app.get('/api/appointments', authenticateToken, async (req, res) => {
-    try {
-        const today = new Date();
-        const collection = client.db('SE3Project').collection('appointments');
-        const appointments = await collection.find({ date: { $gte: today } }).sort({ date: 1 }).toArray();
-        res.json(appointments);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Server error');
-    }
+  try {
+      const appointments = await Appointment.find({ date: { $gte: new Date() } }) 
+          .populate('doctor') // Remove the stray slash here
+          .sort({ date: 1 });
+      res.json(appointments);
+  } catch (error) {
+      console.error('Error fetching appointments:', error);
+      res.status(500).send('Server error');
+  }
 });
+
+
 
 app.delete('/api/appointments/:id', authenticateToken, async (req, res) => {
     try {
@@ -254,6 +257,21 @@ app.delete('/api/appointments/:id', authenticateToken, async (req, res) => {
 app.on('ready', () => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
+
+
+app.post('/api/appointments/book/:id', authenticateToken, async (req, res) => {
+  try {
+    const updatedAppointment = await Appointment.findByIdAndUpdate(req.params.id, { $set: { user: req.userId }}, { new: true });
+    if (!updatedAppointment) {
+      return res.status(404).send('Appointment not found');
+    }
+    res.status(200).json({ message: 'Appointment booked successfully', appointment: updatedAppointment });
+  } catch (error) {
+    console.error('Error booking appointment:', error);
+    res.status(500).send('Error booking appointment');
+  }
+});
+
 
 // Old Code for MongoDB, commenting it out and not deleting it.
 //run().catch(console.dir);

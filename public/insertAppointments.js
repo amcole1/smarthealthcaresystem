@@ -1,6 +1,5 @@
-//This entire page is here as a gimmick so I can enter appointments manually for testing purposes
-
 const mongoose = require('mongoose');
+const Doctor = require('./models/Doctor');
 const Appointment = require('./models/Appointment');
 
 mongoose.connect('mongodb://localhost/SmartHealthCareSystem', {
@@ -10,22 +9,24 @@ mongoose.connect('mongodb://localhost/SmartHealthCareSystem', {
 .then(() => console.log('MongoDB Connected'))
 .catch(err => console.error(err));
 
-//Testing Appointment Data
-const appointmentsData = [
-  { doctor: 'Dr. Smith', date: new Date('2024-04-06'), time: '09:00 AM' },
-  { doctor: 'Dr. Johnson', date: new Date('2024-04-07'), time: '10:00 AM' },
-];
-
-// Insert appointments into database
-async function insertAppointments() {
+// First, insert some doctors
+async function insertData() {
   try {
+    const doctor1 = await Doctor.create({ name: 'Dr. Smith', specialty: 'Cardiology' });
+    const doctor2 = await Doctor.create({ name: 'Dr. Johnson', specialty: 'Dermatology' });
+
+    const appointmentsData = [
+      { doctor: doctor1._id, date: new Date('2024-04-06'), time: '09:00 AM' },
+      { doctor: doctor2._id, date: new Date('2024-04-07'), time: '10:00 AM' },
+    ];
+
     await Appointment.insertMany(appointmentsData);
-    console.log('Appointments inserted successfully');
+    console.log('Doctors and appointments inserted successfully');
   } catch (error) {
-    console.error('Error inserting appointments:', error);
+    console.error('Error inserting data:', error);
   } finally {
     mongoose.connection.close();
   }
 }
 
-insertAppointments(); //Manually run this in the console before viewing
+insertData();
