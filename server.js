@@ -277,19 +277,44 @@ app.on('ready', () => {
     //insertData();
 });
 
+//Old appointments/book.. it wasn't updating the user field?
+// app.post('/api/appointments/book/:id', authenticateToken, async (req, res) => {
+//   try {
+//     const updatedAppointment = await Appointment.findByIdAndUpdate(req.params.id, { $set: { user: req.userId }}, { new: true });
+//     if (!updatedAppointment) {
+//       return res.status(404).send('Appointment not found');
+//     }
+//     res.status(200).json({ message: 'Appointment booked successfully', appointment: updatedAppointment });
+//   } catch (error) {
+//     console.error('Error booking appointment:', error);
+//     res.status(500).send('Error booking appointment');
+//   }
+// });
 
+//New appointments/book.. hopefully.
 app.post('/api/appointments/book/:id', authenticateToken, async (req, res) => {
   try {
-    const updatedAppointment = await Appointment.findByIdAndUpdate(req.params.id, { $set: { user: req.userId }}, { new: true });
+    // Step 1: Update the appointment to set the user field
+    const updatedAppointment = await Appointment.findByIdAndUpdate(req.params.id, {
+      $set: { user: req.userId }
+    }, { new: true }).populate('doctor');
+
     if (!updatedAppointment) {
       return res.status(404).send('Appointment not found');
     }
+
+    // Step 2: Add this appointment to the user's list of appointments
+    await User.findByIdAndUpdate(req.userId, {
+      $push: { appointments: updatedAppointment._id }
+    });
+
     res.status(200).json({ message: 'Appointment booked successfully', appointment: updatedAppointment });
   } catch (error) {
     console.error('Error booking appointment:', error);
     res.status(500).send('Error booking appointment');
   }
 });
+
 
 // Get user's booked appointments.. finally!
 app.get('/api/user/appointments', authenticateToken, async (req, res) => {
