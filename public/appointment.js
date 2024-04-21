@@ -23,19 +23,40 @@ document.addEventListener('DOMContentLoaded', function () {
       appointmentsDiv.innerHTML = '<p>Error fetching appointments. Check console for details.</p>';
     }
   }
+  //!! This code works, but it does not populate the Doctor field.
+  // function displayAppointments(appointments) {
+  //   if (appointments.length === 0) {
+  //     appointmentsDiv.innerHTML = '<p>No appointments available</p>';
+  //     return;
+  //   }
 
+  //   appointmentsDiv.innerHTML = '';
+  //   appointments.forEach(appointment => {
+  //     const appointmentElement = document.createElement('div');
+  //     appointmentElement.className = 'appointment';
+  //     appointmentElement.innerHTML = `
+  //       <p><strong>Doctor:</strong> ${appointment.doctor.name}</p>
+  //       <p><strong>Date:</strong> ${new Date(appointment.date).toDateString()}</p>
+  //       <p><strong>Time:</strong> ${appointment.time}</p>
+  //       <button onclick="bookAppointment('${appointment._id}')">Book Appointment</button>
+  //     `;
+  //     appointmentsDiv.appendChild(appointmentElement);
+  //   });
+  // }
+
+  //!! Attempt to populate the doctor field.
   function displayAppointments(appointments) {
     if (appointments.length === 0) {
       appointmentsDiv.innerHTML = '<p>No appointments available</p>';
       return;
     }
-
+  
     appointmentsDiv.innerHTML = '';
     appointments.forEach(appointment => {
       const appointmentElement = document.createElement('div');
       appointmentElement.className = 'appointment';
       appointmentElement.innerHTML = `
-        <p><strong>Doctor:</strong> ${appointment.doctor.name}</p>
+        <p><strong>Doctor:</strong> ${appointment.doctor ? appointment.doctor.name : 'Not assigned'}</p>
         <p><strong>Date:</strong> ${new Date(appointment.date).toDateString()}</p>
         <p><strong>Time:</strong> ${appointment.time}</p>
         <button onclick="bookAppointment('${appointment._id}')">Book Appointment</button>
@@ -43,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
       appointmentsDiv.appendChild(appointmentElement);
     });
   }
+  
 
   function bookAppointment(appointmentId) {
     console.log(`Attempting to book appointment with ID: ${appointmentId}`);
