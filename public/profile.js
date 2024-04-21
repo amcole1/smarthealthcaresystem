@@ -339,47 +339,50 @@ function submitForm() {
     //Fetch booked appointments!
     function fetchBookedAppointments() {
         fetch('/api/user/appointments', {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-          }
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+            }
         })
         .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to fetch appointments');
-          }
-          return response.json();
+            if (!response.ok) {
+                throw new Error(`Failed to fetch booked appointments, status: ${response.status}`);
+            }
+            return response.json();
         })
         .then(appointments => {
-          displayBookedAppointments(appointments);
+            console.log('Booked appointments:', appointments);
+            displayBookedAppointments(appointments);
         })
         .catch(error => {
-          console.error('Error fetching booked appointments:', error);
-          alert('Failed to fetch booked appointments. Please check the console for more information.');
+            console.error('Error fetching booked appointments:', error);
         });
-      }
-      
-      function displayBookedAppointments(appointments) {
+    }
+    
+    function displayBookedAppointments(appointments) {
         const appointmentsContainer = document.getElementById('appointmentsContainer');
-        if (!appointments.length) {
-          appointmentsContainer.innerHTML = '<p>No booked appointments.</p>';
-          return;
+        if (appointments.length === 0) {
+            appointmentsContainer.innerHTML = '<p>No booked appointments.</p>';
+            return;
         }
-      
         appointmentsContainer.innerHTML = appointments.map(appointment => `
-          <div>
-            <p>Doctor: ${appointment.doctor.name}</p>
-            <p>Date: ${new Date(appointment.date).toLocaleDateString()}</p>
-            <p>Time: ${appointment.time}</p>
-          </div>
+            <div>
+                <p>Doctor: ${appointment.doctor.name}</p>
+                <p>Date: ${new Date(appointment.date).toLocaleDateString()}</p>
+                <p>Time: ${appointment.time}</p>
+            </div>
         `).join('');
-      }
+    }
+    
       
       document.addEventListener('DOMContentLoaded', function() {
         fetchUserData();
         fetchBookedAppointments();
         document.getElementById('editProfileButton').addEventListener('click', openEditModal);
-      });
+        document.querySelector('.close-button').addEventListener('click', function() {
+            document.getElementById('editModal').style.display = "none";
+        });
+    });
+    
       
 
 
