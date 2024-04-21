@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Doctor = require('./models/Doctor');
-const Appointment = require('./models/Appointment');
+const Doctor = require('../models/Doctor');
+const Appointment = require('../models/Appointment');
 
 mongoose.connect('your-mongodb-atlas-connection-string', { // Replace with your MongoDB Atlas connection string
   useNewUrlParser: true,
