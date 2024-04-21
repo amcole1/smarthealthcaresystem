@@ -45,44 +45,23 @@ async function run() {
 }
 */
 // Using Mongoose now instead of MongoDB
-// mongoose.connect(process.env.MONGO_DB_URI).then(() => {
-//   console.log('MongoDB connected');
-//   app.listen(PORT, () => console.log(`Server running on port ${PORT}`)
-//   );
-// }).catch(err => {
-//   console.error('MongoDB connection error:', err);
-// });
-
-mongoose.connect(process.env.MONGO_DB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  ssl: true,
-  authSource: 'admin'
-}).then(() => {
+mongoose.connect(process.env.MONGO_DB_URI).then(() => {
   console.log('MongoDB connected');
-
-  
-  insertData().then(() => {
-    console.log('Data inserted successfully');
-    startServer();
-  }).catch(error => {
-    console.error('Failed to insert initial data:', error);
-    process.exit(1);
-  });
-
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`)
+  );
 }).catch(err => {
   console.error('MongoDB connection error:', err);
-  process.exit(1);
 });
 
-function startServer() {
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-}
 
-app.use(bodyParser.json());
-app.use(express.static('public'));
-
-
+//Trigget Data Insertion
+app.get('/init-db', (req, res) => {
+    insertData().then(() => {
+        res.send('Data inserted successfully');
+    }).catch(error => {
+        res.status(500).send('Failed to insert data: ' + error.message);
+    });
+});
 
 
 
@@ -173,36 +152,20 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// const authenticateToken = (req, res, next) => {
-//     const authHeader = req.headers['authorization'];
-//     const token = authHeader && authHeader.split(' ')[1];
-//     if (token == null) return res.sendStatus(401);
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token == null) return res.sendStatus(401);
 
-//     jwt.verify(token, JWT_SECRET, (err, decoded) => {
-//         if (err) {
-//             console.error("Token verification error:", err);
-//             return res.sendStatus(403);
-//         }
-//         req.userId = decoded.userId;
-//         next();
-//     });
-// };
-
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
-  if (token == null) return res.sendStatus(401);
-
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
-    if (err) {
-      console.error("Token verification error:", err);
-      return res.sendStatus(403);
-    }
-    req.userId = decoded.userId;
-    next();
-  });
-}
-
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            console.error("Token verification error:", err);
+            return res.sendStatus(403);
+        }
+        req.userId = decoded.userId;
+        next();
+    });
+};
 
 
 //Old MongoDB
@@ -289,7 +252,6 @@ app.get('/api/appointments', authenticateToken, async (req, res) => {
       res.status(500).send('Server error');
   }
 });
-
 
 
 
