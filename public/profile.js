@@ -1,10 +1,26 @@
+//Old event listener, worked prior to needing to show appointments
+// document.addEventListener('DOMContentLoaded', function() {
+//     if (!localStorage.getItem('jwt')) {
+//         window.location.href = '/index.html'; // Redirect to login if no token
+//         return; 
+//     }
+
+//     fetchUserData();
+//     document.getElementById('editProfileButton').addEventListener('click', openEditModal);
+//     document.querySelector('.close-button').addEventListener('click', function() {
+//         document.getElementById('editModal').style.display = "none";
+//     });
+// });
+
+//New FetchUserData
 document.addEventListener('DOMContentLoaded', function() {
     if (!localStorage.getItem('jwt')) {
         window.location.href = '/index.html'; // Redirect to login if no token
-        return; 
+        return;
     }
 
     fetchUserData();
+    fetchBookedAppointments();  
     document.getElementById('editProfileButton').addEventListener('click', openEditModal);
     document.querySelector('.close-button').addEventListener('click', function() {
         document.getElementById('editModal').style.display = "none";
@@ -31,7 +47,7 @@ let currentUserData;
 // }
 
 
-//New fetchUserData with additional logging.
+
 function fetchUserData() {
     fetch('/api/user', {
         method: 'GET',
@@ -48,6 +64,7 @@ function fetchUserData() {
     })
     .catch(error => console.error('Error fetching user data:', error));
 }
+
 
 
 // Old displayUserData function
@@ -339,6 +356,7 @@ function submitForm() {
     //Fetch booked appointments!
     function fetchBookedAppointments() {
         fetch('/api/user/appointments', {
+            method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('jwt')
             }
@@ -350,7 +368,7 @@ function submitForm() {
             return response.json();
         })
         .then(appointments => {
-            console.log('Booked appointments:', appointments);
+            console.log('Booked appointments:', appointments);  // Debugging output
             displayBookedAppointments(appointments);
         })
         .catch(error => {
@@ -360,18 +378,22 @@ function submitForm() {
     
     function displayBookedAppointments(appointments) {
         const appointmentsContainer = document.getElementById('appointmentsContainer');
-        if (appointments.length === 0) {
+        if (!appointments.length) {
             appointmentsContainer.innerHTML = '<p>No booked appointments.</p>';
             return;
         }
-        appointmentsContainer.innerHTML = appointments.map(appointment => `
+    
+        let appointmentHTML = appointments.map(appointment => `
             <div>
                 <p>Doctor: ${appointment.doctor.name}</p>
                 <p>Date: ${new Date(appointment.date).toLocaleDateString()}</p>
                 <p>Time: ${appointment.time}</p>
             </div>
         `).join('');
+    
+        appointmentsContainer.innerHTML = appointmentHTML;  // Display fetched appointments
     }
+    
     
       
       document.addEventListener('DOMContentLoaded', function() {
