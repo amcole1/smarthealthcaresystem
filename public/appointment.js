@@ -44,7 +44,27 @@ document.addEventListener('DOMContentLoaded', function () {
   //   });
   // }
 
-  //!! Attempt to populate the doctor field.
+  //!! Worked to poulate the doctor field, but I cannot book appoointments. V2
+  // function displayAppointments(appointments) {
+  //   if (appointments.length === 0) {
+  //     appointmentsDiv.innerHTML = '<p>No appointments available</p>';
+  //     return;
+  //   }
+  
+  //   appointmentsDiv.innerHTML = '';
+  //   appointments.forEach(appointment => {
+  //     const appointmentElement = document.createElement('div');
+  //     appointmentElement.className = 'appointment';
+  //     appointmentElement.innerHTML = `
+  //       <p><strong>Doctor:</strong> ${appointment.doctor ? appointment.doctor.name : 'Not assigned'}</p>
+  //       <p><strong>Date:</strong> ${new Date(appointment.date).toDateString()}</p>
+  //       <p><strong>Time:</strong> ${appointment.time}</p>
+  //       <button onclick="bookAppointment('${appointment._id}')">Book Appointment</button>
+  //     `;
+  //     appointmentsDiv.appendChild(appointmentElement);
+  //   });
+  // }
+
   function displayAppointments(appointments) {
     if (appointments.length === 0) {
       appointmentsDiv.innerHTML = '<p>No appointments available</p>';
@@ -59,11 +79,17 @@ document.addEventListener('DOMContentLoaded', function () {
         <p><strong>Doctor:</strong> ${appointment.doctor ? appointment.doctor.name : 'Not assigned'}</p>
         <p><strong>Date:</strong> ${new Date(appointment.date).toDateString()}</p>
         <p><strong>Time:</strong> ${appointment.time}</p>
-        <button onclick="bookAppointment('${appointment._id}')">Book Appointment</button>
+        <button id="book-${appointment._id}">Book Appointment</button>
       `;
       appointmentsDiv.appendChild(appointmentElement);
+  
+      // Add event listener to each button
+      document.getElementById(`book-${appointment._id}`).addEventListener('click', function() {
+        bookAppointment(appointment._id);
+      });
     });
   }
+  
   
 
   function bookAppointment(appointmentId) {
