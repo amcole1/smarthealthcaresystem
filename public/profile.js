@@ -359,6 +359,7 @@ function submitForm() {
 
     //Fetch booked appointments!
     function fetchBookedAppointments() {
+        console.log("Fetching appointments");
         fetch('/api/user/appointments', {
             method: 'GET',
             headers: {
@@ -374,6 +375,9 @@ function submitForm() {
             console.error('Error fetching booked appointments:', error);
         });
     }
+
+    //REMOVE
+    fetchBookedAppointments();
     
     function displayBookedAppointments(appointments) {
         const appointmentsContainer = document.getElementById('appointmentsContainer');
