@@ -62,7 +62,7 @@ function fetchUserData() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Fetched User Data:', data);  // Log the fetched data
+        console.log('Fetched User Data:', data);
         currentUserData = data;
         displayUserData(data);
     })
@@ -365,14 +365,9 @@ function submitForm() {
                 'Authorization': 'Bearer ' + localStorage.getItem('jwt')
             }
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch booked appointments, status: ${response.status}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(appointments => {
-            console.log('Booked appointments:', appointments);  // Debugging output
+            console.log('Booked appointments:', appointments);
             displayBookedAppointments(appointments);
         })
         .catch(error => {
@@ -382,7 +377,7 @@ function submitForm() {
     
     function displayBookedAppointments(appointments) {
         const appointmentsContainer = document.getElementById('appointmentsContainer');
-        if (!appointments.length) {
+        if (appointments.length === 0) {
             appointmentsContainer.innerHTML = '<p>No booked appointments.</p>';
             return;
         }
@@ -395,19 +390,19 @@ function submitForm() {
             </div>
         `).join('');
     
-        appointmentsContainer.innerHTML = appointmentHTML;  // Display fetched appointments
+        appointmentsContainer.innerHTML = appointmentHTML;
     }
     
     
       
-      document.addEventListener('DOMContentLoaded', function() {
-        fetchUserData();
-        fetchBookedAppointments();
-        document.getElementById('editProfileButton').addEventListener('click', openEditModal);
-        document.querySelector('.close-button').addEventListener('click', function() {
-            document.getElementById('editModal').style.display = "none";
-        });
-    });
+    //   document.addEventListener('DOMContentLoaded', function() {
+    //     fetchUserData();
+    //     fetchBookedAppointments();
+    //     document.getElementById('editProfileButton').addEventListener('click', openEditModal);
+    //     document.querySelector('.close-button').addEventListener('click', function() {
+    //         document.getElementById('editModal').style.display = "none";
+    //     });
+    // });
     
       
 
