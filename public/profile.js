@@ -421,15 +421,15 @@ function submitForm() {
     }
     
     
-      
-      document.addEventListener('DOMContentLoaded', function() {
-        fetchUserData();
-        fetchBookedAppointments();
-        document.getElementById('editProfileButton').addEventListener('click', openEditModal);
-        document.querySelector('.close-button').addEventListener('click', function() {
-            document.getElementById('editModal').style.display = "none";
-        });
-    });
+    //removing 2nd event listener, dunno why I have 2 and why it is only now causing an issue.      
+    //   document.addEventListener('DOMContentLoaded', function() {
+    //     fetchUserData();
+    //     fetchBookedAppointments();
+    //     document.getElementById('editProfileButton').addEventListener('click', openEditModal);
+    //     document.querySelector('.close-button').addEventListener('click', function() {
+    //         document.getElementById('editModal').style.display = "none";
+    //     });
+    // });
     
       
 
