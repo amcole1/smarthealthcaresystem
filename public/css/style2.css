@@ -1,18 +1,17 @@
-
 body, h1, h2, h3, p, form {
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif; /* Consistent font-family */
 }
 
 body {
-    font-family: Arial, sans-serif;
     line-height: 1.6;
     padding: 20px;
     background-color: #f4f4f4;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px; /* Wider container to accommodate three columns */
     margin: auto;
     background: #fff;
     padding: 20px;
@@ -20,50 +19,61 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-    color: #333;
+.profile-section {
     margin-bottom: 20px;
 }
 
-.column, .edit-column {
+.profile-header {
+    text-align: center;
     margin-bottom: 20px;
 }
 
-.column label, .edit-column label {
+.columns-container {
+    display: flex;
+    justify-content: space-between; /* This will space out your columns */
+}
+
+.column {
+    flex: 1; /* Each column takes equal width */
+    margin: 0 10px; /* Spacing between columns */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.column h3 {
+    text-align: center;
+}
+
+.edit-button {
     display: block;
-    margin-bottom: 5px;
-}
-
-.column input[type="text"],
-.column input[type="number"],
-.edit-column input[type="text"],
-.edit-column input[type="number"],
-.edit-column textarea {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-.edit-button, .submit-button {
-    display: inline-block;
+    width: auto;
+    margin: 20px auto; /* Center the button horizontally */
+    padding: 10px 20px;
     background-color: #007bff;
-    color: #ffffff;
-    padding: 10px 15px;
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
+    text-align: center;
 }
 
-.edit-button:hover, .submit-button:hover {
+.edit-button:hover {
     background-color: #0056b3;
 }
 
-
-.edit-columns-container {
-    display: none; 
+.appointments-container {
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 2px solid #ccc; /* Separates appointments visually */
 }
 
+/* Responsive layout adjustments */
+@media (max-width: 900px) {
+    .columns-container {
+        flex-direction: column;
+    }
 
+    .column {
+        margin-bottom: 20px;
+    }
+}

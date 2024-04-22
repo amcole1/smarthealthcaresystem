@@ -7,21 +7,26 @@
     <link rel="stylesheet" href="css/style2.css">
 </head>
 <body>
-    <h2>User Profile</h2>
-    <div class="profile-section" id="userInfoSection">
-        <h3>User Information</h3>
-        <div id="userInfoDisplay"></div>
-    </div>
-    <div class="profile-section" id="allergiesSection">
-        <h3>Allergies</h3>
-        <div id="allergiesDisplay">No allergies listed.</div>
-    </div>
-    <div class="profile-section" id="medicationsSection">
-        <h3>Medications</h3>
-        <div id="medicationsDisplay">No medications listed.</div>
-    </div>
-    <div class="profile-section">
+    <div class="container">
+        <h2>User Profile</h2>
+        <div class="columns-container">
+            <div class="profile-section column" id="userInfoSection">
+                <h3>User Information</h3>
+                <div id="userInfoDisplay"></div>
+            </div>
+            <div class="profile-section column" id="allergiesSection">
+                <h3>Allergies</h3>
+                <div id="allergiesDisplay">No allergies listed.</div>
+            </div>
+            <div class="profile-section column" id="medicationsSection">
+                <h3>Medications</h3>
+                <div id="medicationsDisplay">No medications listed.</div>
+            </div>
+        </div>
         <button class="edit-button" id="editProfileButton">Edit Profile</button>
+        <div class="appointments-container" id="appointmentsContainer">
+            <h3>Booked Appointments</h3>
+        </div>
     </div>
 
     <!-- Modal.. maybe -->
