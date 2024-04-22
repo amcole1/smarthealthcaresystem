@@ -400,14 +400,14 @@ function submitForm() {
     
     
       
-    //   document.addEventListener('DOMContentLoaded', function() {
-    //     fetchUserData();
-    //     fetchBookedAppointments();
-    //     document.getElementById('editProfileButton').addEventListener('click', openEditModal);
-    //     document.querySelector('.close-button').addEventListener('click', function() {
-    //         document.getElementById('editModal').style.display = "none";
-    //     });
-    // });
+      document.addEventListener('DOMContentLoaded', function() {
+        fetchUserData();
+        fetchBookedAppointments();
+        document.getElementById('editProfileButton').addEventListener('click', openEditModal);
+        document.querySelector('.close-button').addEventListener('click', function() {
+            document.getElementById('editModal').style.display = "none";
+        });
+    });
     
       
 
