@@ -97,11 +97,14 @@ function displayBookedAppointments(appointments) {
 }
 
 function setupEventListeners() {
-    document.getElementById('editProfileButton').addEventListener('click', openEditModal);
+      document.getElementById('editProfileButton').addEventListener('click', openEditModal);
+
     document.querySelector('.close-button').addEventListener('click', function() {
-        document.getElementById('editModal').style.display = "none";
+        const modal = document.getElementById('editModal');
+        modal.classList.remove('show');
     });
 }
+
 
 document.addEventListener('DOMContentLoaded', function() {
     if (!localStorage.getItem('jwt')) {
