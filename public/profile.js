@@ -116,7 +116,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function openEditModal() {
+    const modal = document.getElementById('editModal');
     const modalBody = document.getElementById('modalBody');
+
     modalBody.innerHTML = `
         <div id="userInfoFields">
             <label>First Name:</label>
@@ -145,8 +147,6 @@ function openEditModal() {
             <input type="text" id="editPhoneNumber" value="${currentUserData.userInfo.phoneNumber || ''}"><br>
         </div>
         <h3>Allergies</h3>
-        </div>
-        <h3>Allergies</h3>
         <div id="allergiesFieldsContainer">
             ${currentUserData.allergiesInfo.allergies.map(allergy => `
                 <div class="allergyField">
@@ -158,13 +158,22 @@ function openEditModal() {
         </div>
         <h3>Medications</h3>
         <div id="medicationsFieldsContainer">
-            ${currentUserData.medicalInfo.medication.map(med => `<div><input type="text" class="medName" value="${med.name}"><input type="text" class="medDosage" value="${med.dosage}"><input type="text" class="medFrequency" value="${med.frequency}"><input type="date" class="medPrescribedDate" value="${med.prescribedDate?.split('T')[0] || new Date().toISOString().split('T')[0]}"><button onclick="this.parentElement.remove();">Remove</button></div>`).join('')}
+            ${currentUserData.medicalInfo.medication.map(med => `
+                <div>
+                    <input type="text" class="medName" value="${med.name}">
+                    <input type="text" class="medDosage" value="${med.dosage}">
+                    <input type="text" class="medFrequency" value="${med.frequency}">
+                    <input type="date" class="medPrescribedDate" value="${med.prescribedDate?.split('T')[0] || new Date().toISOString().split('T')[0]}">
+                    <button onclick="this.parentElement.remove();">Remove</button>
+                </div>
+            `).join('')}
             <button onclick="addMedicationField()">Add Medication</button>
         </div>
         <button onclick="submitForm()">Save Changes</button>
     `;
-    document.getElementById('editModal').style.display = "block";
+     modal.classList.add('show');
 }
+
 
 
 function addAllergyField(value = '') {
