@@ -96,6 +96,7 @@ function displayBookedAppointments(appointments) {
     appointmentsContainer.innerHTML = appointmentHTML;
 }
 
+
 function setupEventListeners() {
       document.getElementById('editProfileButton').addEventListener('click', openEditModal);
 
