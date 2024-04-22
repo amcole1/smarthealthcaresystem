@@ -13,44 +13,9 @@
 // });
 
 //New FetchUserData
-document.addEventListener('DOMContentLoaded', function() {
-    if (!localStorage.getItem('jwt')) {
-        window.location.href = '/index.html'; // Redirect if no JWT token
-        return;
-    }
 
-    fetchUserData();
-    fetchBookedAppointments();
-    setupEventListeners();
-});
 
 let currentUserData;
-
-function setupEventListeners() {
-    document.getElementById('editProfileButton').addEventListener('click', openEditModal);
-    document.querySelector('.close-button').addEventListener('click', function() {
-        document.getElementById('editModal').style.display = "none";
-    });
-}
-
-//Old FetchUserData
-// function fetchUserData() {
-//     fetch('/api/user', {
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-//         }
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         currentUserData = data;
-//         displayUserData(data);
-//     })
-//     .catch(error => console.error('Error fetching user data:', error));
-// }
-
-
 
 function fetchUserData() {
     fetch('/api/user', {
@@ -69,44 +34,6 @@ function fetchUserData() {
     .catch(error => console.error('Error fetching user data:', error));
 }
 
-
-
-// Old displayUserData function
-// function displayUserData(userData) {
-//     const userInfoDisplay = document.getElementById('userInfoDisplay');
-//     userInfoDisplay.innerHTML = `
-//         <p>First Name: ${userData.userInfo.firstName}</p>
-//         <p>Last Name: ${userData.userInfo.lastName}</p>
-//         <p>DOB: ${userData.userInfo.dob.month}/${userData.userInfo.dob.day}/${userData.userInfo.dob.year}</p>
-//         <p>Gender: ${userData.userInfo.gender}</p>
-//         <p>Address: ${userData.userInfo.address.streetNumber} ${userData.userInfo.address.streetName}, ${userData.userInfo.address.city}, ${userData.userInfo.address.state} ${userData.userInfo.address.zipCode}</p>
-//         <p>Phone Number: ${userData.userInfo.phoneNumber}</p>
-//     `;
-
-//     // Clear and update allergies display
-//     const allergiesDisplay = document.getElementById('allergiesDisplay');
-//     allergiesDisplay.innerHTML = userData.allergiesInfo.allergies.length > 0 
-//         ? userData.allergiesInfo.allergies.map(allergy => `<p>${allergy}</p>`).join('') 
-//         : '<p>No allergies listed.</p>';
-
-//     // Clear and update medications display
-//     const medicationsDisplay = document.getElementById('medicationsDisplay');
-//     if (userData.medicalInfo.medication.length > 0) {
-//         medicationsDisplay.innerHTML = userData.medicalInfo.medication.map(med => `
-//             <div>
-//                 <p>Name: ${med.name}</p>
-//                 <p>Dosage: ${med.dosage}</p>
-//                 <p>Frequency: ${med.frequency}</p>
-//                 <p>Prescribed Date: ${new Date(med.prescribedDate).toLocaleDateString()}</p>
-//             </div>
-//         `).join('');
-//     } else {
-//         medicationsDisplay.innerHTML = '<p>No medications listed.</p>';
-//     }
-    
-// }
-
-//New slightly updated displayUserData function
 function displayUserData(userData) {
     console.log(userData); // Check what is received exactly.
 
@@ -149,6 +76,121 @@ function displayUserData(userData) {
         medicationsDisplay.innerHTML = '<p>No medications listed.</p>';
     }
 }
+
+function fetchBookedAppointments() {
+    console.log("Fetching appointments");
+    fetch('/api/user/appointments', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        }
+    })
+    .then(response => response.json())
+    .then(appointments => {
+        console.log('Booked appointments:', appointments);
+        displayBookedAppointments(appointments);
+    })
+    .catch(error => {
+        console.error('Error fetching booked appointments:', error);
+    });
+}
+
+function displayBookedAppointments(appointments) {
+    const appointmentsContainer = document.getElementById('appointmentsContainer');
+    if (appointments.length === 0) {
+        appointmentsContainer.innerHTML = '<p>No booked appointments.</p>';
+        return;
+    }
+
+    let appointmentHTML = appointments.map(appointment => `
+        <div>
+            <p>Doctor: ${appointment.doctor.name}</p>
+            <p>Date: ${new Date(appointment.date).toLocaleDateString()}</p>
+            <p>Time: ${appointment.time}</p>
+        </div>
+    `).join('');
+
+    appointmentsContainer.innerHTML = appointmentHTML;
+}
+
+function setupEventListeners() {
+    document.getElementById('editProfileButton').addEventListener('click', openEditModal);
+    document.querySelector('.close-button').addEventListener('click', function() {
+        document.getElementById('editModal').style.display = "none";
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (!localStorage.getItem('jwt')) {
+        window.location.href = '/index.html'; // Redirect if no JWT token
+        return;
+    }
+
+    fetchUserData();
+    fetchBookedAppointments();
+    setupEventListeners();
+});
+
+//Old FetchUserData
+// function fetchUserData() {
+//     fetch('/api/user', {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+//         }
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         currentUserData = data;
+//         displayUserData(data);
+//     })
+//     .catch(error => console.error('Error fetching user data:', error));
+// }
+
+
+
+
+
+
+
+// Old displayUserData function
+// function displayUserData(userData) {
+//     const userInfoDisplay = document.getElementById('userInfoDisplay');
+//     userInfoDisplay.innerHTML = `
+//         <p>First Name: ${userData.userInfo.firstName}</p>
+//         <p>Last Name: ${userData.userInfo.lastName}</p>
+//         <p>DOB: ${userData.userInfo.dob.month}/${userData.userInfo.dob.day}/${userData.userInfo.dob.year}</p>
+//         <p>Gender: ${userData.userInfo.gender}</p>
+//         <p>Address: ${userData.userInfo.address.streetNumber} ${userData.userInfo.address.streetName}, ${userData.userInfo.address.city}, ${userData.userInfo.address.state} ${userData.userInfo.address.zipCode}</p>
+//         <p>Phone Number: ${userData.userInfo.phoneNumber}</p>
+//     `;
+
+//     // Clear and update allergies display
+//     const allergiesDisplay = document.getElementById('allergiesDisplay');
+//     allergiesDisplay.innerHTML = userData.allergiesInfo.allergies.length > 0 
+//         ? userData.allergiesInfo.allergies.map(allergy => `<p>${allergy}</p>`).join('') 
+//         : '<p>No allergies listed.</p>';
+
+//     // Clear and update medications display
+//     const medicationsDisplay = document.getElementById('medicationsDisplay');
+//     if (userData.medicalInfo.medication.length > 0) {
+//         medicationsDisplay.innerHTML = userData.medicalInfo.medication.map(med => `
+//             <div>
+//                 <p>Name: ${med.name}</p>
+//                 <p>Dosage: ${med.dosage}</p>
+//                 <p>Frequency: ${med.frequency}</p>
+//                 <p>Prescribed Date: ${new Date(med.prescribedDate).toLocaleDateString()}</p>
+//             </div>
+//         `).join('');
+//     } else {
+//         medicationsDisplay.innerHTML = '<p>No medications listed.</p>';
+//     }
+    
+// }
+
+//New slightly updated displayUserData function
+
 
 
 
@@ -357,48 +399,7 @@ function submitForm() {
     });
 
 
-    //Fetch booked appointments!
-    function fetchBookedAppointments() {
-        console.log("Fetching appointments");
-        fetch('/api/user/appointments', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-            }
-        })
-        .then(response => response.json())
-        .then(appointments => {
-            console.log('Booked appointments:', appointments);
-            displayBookedAppointments(appointments);
-        })
-        .catch(error => {
-            console.error('Error fetching booked appointments:', error);
-        });
-    }
 
-    //REMOVE
-    fetchBookedAppointments();
-    
-    function displayBookedAppointments(appointments) {
-        const appointmentsContainer = document.getElementById('appointmentsContainer');
-        if (appointments.length === 0) {
-            appointmentsContainer.innerHTML = '<p>No booked appointments.</p>';
-            return;
-        }
-    
-        let appointmentHTML = appointments.map(appointment => `
-            <div>
-                <p>Doctor: ${appointment.doctor.name}</p>
-                <p>Date: ${new Date(appointment.date).toLocaleDateString()}</p>
-                <p>Time: ${appointment.time}</p>
-            </div>
-        `).join('');
-    
-        appointmentsContainer.innerHTML = appointmentHTML;
-    }
-    
-    
-      
     //   document.addEventListener('DOMContentLoaded', function() {
     //     fetchUserData();
     //     fetchBookedAppointments();
@@ -407,14 +408,12 @@ function submitForm() {
     //         document.getElementById('editModal').style.display = "none";
     //     });
     // });
-    
-      
-
-
-
-
 
 }
 
 
+    
+
+
+    //Fetch booked appointments!
 
