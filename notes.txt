@@ -1,4 +1,1 @@
-npm install express mongoose bcryptjs jsonwebtoken body-parser express-validator
-
-ToDo:
-Help
+Stuff is working as of this point. Working on CSS.
