@@ -15,19 +15,23 @@
 //New FetchUserData
 document.addEventListener('DOMContentLoaded', function() {
     if (!localStorage.getItem('jwt')) {
-        window.location.href = '/index.html'; // Redirect to login if no token
+        window.location.href = '/index.html'; // Redirect if no JWT token
         return;
     }
 
     fetchUserData();
-    fetchBookedAppointments();  
+    fetchBookedAppointments();
+    setupEventListeners();
+});
+
+let currentUserData;
+
+function setupEventListeners() {
     document.getElementById('editProfileButton').addEventListener('click', openEditModal);
     document.querySelector('.close-button').addEventListener('click', function() {
         document.getElementById('editModal').style.display = "none";
     });
-});
-
-let currentUserData;
+}
 
 //Old FetchUserData
 // function fetchUserData() {
