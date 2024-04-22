@@ -12,6 +12,8 @@
 //     });
 // });
 
+let currentUserData;
+
 //New FetchUserData
 document.addEventListener('DOMContentLoaded', function() {
     if (!localStorage.getItem('jwt')) {
@@ -20,14 +22,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     fetchUserData();
-    fetchBookedAppointments();  
+    fetchBookedAppointments();
     document.getElementById('editProfileButton').addEventListener('click', openEditModal);
     document.querySelector('.close-button').addEventListener('click', function() {
         document.getElementById('editModal').style.display = "none";
     });
 });
 
-let currentUserData;
+
 
 //Old FetchUserData
 // function fetchUserData() {
@@ -47,22 +49,46 @@ let currentUserData;
 // }
 
 
+//!! Old fetchUserData
+// function fetchUserData() {
+//     fetch('/api/user', {
+//         method: 'GET',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+//         }
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log('Fetched User Data:', data);  // Log the fetched data
+//         currentUserData = data;
+//         displayUserData(data);
+//     })
+//     .catch(error => console.error('Error fetching user data:', error));
+// }
 
-function fetchUserData() {
-    fetch('/api/user', {
+
+//New fetchUserData
+function fetchBookedAppointments() {
+    fetch('/api/user/appointments', {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('jwt')
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Fetched User Data:', data);  // Log the fetched data
-        currentUserData = data;
-        displayUserData(data);
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Failed to fetch booked appointments, status: ${response.status}`);
+        }
+        return response.json();
     })
-    .catch(error => console.error('Error fetching user data:', error));
+    .then(appointments => {
+        console.log('Booked appointments:', appointments);  // Debugging output
+        displayBookedAppointments(appointments);
+    })
+    .catch(error => {
+        console.error('Error fetching booked appointments:', error);
+    });
 }
 
 
@@ -378,7 +404,7 @@ function submitForm() {
     
     function displayBookedAppointments(appointments) {
         const appointmentsContainer = document.getElementById('appointmentsContainer');
-        if (!appointments.length) {
+        if (appointments.length === 0) {
             appointmentsContainer.innerHTML = '<p>No booked appointments.</p>';
             return;
         }
@@ -391,7 +417,7 @@ function submitForm() {
             </div>
         `).join('');
     
-        appointmentsContainer.innerHTML = appointmentHTML;  // Display fetched appointments
+        appointmentsContainer.innerHTML = appointmentHTML; 
     }
     
     
