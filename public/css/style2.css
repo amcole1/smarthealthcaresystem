@@ -123,3 +123,21 @@ body {
     visibility: visible;
     transition: opacity 0.5s; 
 }
+
+.appointment-card {
+    border: 1px solid #ddd; 
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9; 
+    border-radius: 4px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
+
+.appointment-card p {
+    margin: 5px 0; 
+}
+
+.appointment-header {
+    font-weight: bold;
+    color: #333; 
+}
