@@ -1,20 +1,3 @@
-//Old event listener, worked prior to needing to show appointments
-// document.addEventListener('DOMContentLoaded', function() {
-//     if (!localStorage.getItem('jwt')) {
-//         window.location.href = '/index.html'; // Redirect to login if no token
-//         return; 
-//     }
-
-//     fetchUserData();
-//     document.getElementById('editProfileButton').addEventListener('click', openEditModal);
-//     document.querySelector('.close-button').addEventListener('click', function() {
-//         document.getElementById('editModal').style.display = "none";
-//     });
-// });
-
-//New FetchUserData
-
-
 let currentUserData;
 
 function fetchUserData() {
@@ -130,70 +113,6 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchBookedAppointments();
     setupEventListeners();
 });
-
-//Old FetchUserData
-// function fetchUserData() {
-//     fetch('/api/user', {
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-//         }
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         currentUserData = data;
-//         displayUserData(data);
-//     })
-//     .catch(error => console.error('Error fetching user data:', error));
-// }
-
-
-
-
-
-
-
-// Old displayUserData function
-// function displayUserData(userData) {
-//     const userInfoDisplay = document.getElementById('userInfoDisplay');
-//     userInfoDisplay.innerHTML = `
-//         <p>First Name: ${userData.userInfo.firstName}</p>
-//         <p>Last Name: ${userData.userInfo.lastName}</p>
-//         <p>DOB: ${userData.userInfo.dob.month}/${userData.userInfo.dob.day}/${userData.userInfo.dob.year}</p>
-//         <p>Gender: ${userData.userInfo.gender}</p>
-//         <p>Address: ${userData.userInfo.address.streetNumber} ${userData.userInfo.address.streetName}, ${userData.userInfo.address.city}, ${userData.userInfo.address.state} ${userData.userInfo.address.zipCode}</p>
-//         <p>Phone Number: ${userData.userInfo.phoneNumber}</p>
-//     `;
-
-//     // Clear and update allergies display
-//     const allergiesDisplay = document.getElementById('allergiesDisplay');
-//     allergiesDisplay.innerHTML = userData.allergiesInfo.allergies.length > 0 
-//         ? userData.allergiesInfo.allergies.map(allergy => `<p>${allergy}</p>`).join('') 
-//         : '<p>No allergies listed.</p>';
-
-//     // Clear and update medications display
-//     const medicationsDisplay = document.getElementById('medicationsDisplay');
-//     if (userData.medicalInfo.medication.length > 0) {
-//         medicationsDisplay.innerHTML = userData.medicalInfo.medication.map(med => `
-//             <div>
-//                 <p>Name: ${med.name}</p>
-//                 <p>Dosage: ${med.dosage}</p>
-//                 <p>Frequency: ${med.frequency}</p>
-//                 <p>Prescribed Date: ${new Date(med.prescribedDate).toLocaleDateString()}</p>
-//             </div>
-//         `).join('');
-//     } else {
-//         medicationsDisplay.innerHTML = '<p>No medications listed.</p>';
-//     }
-    
-// }
-
-//New slightly updated displayUserData function
-
-
-
-
 
 
 function openEditModal() {
@@ -331,7 +250,6 @@ function addMedicationField() {
 }
 
 
-
 function submitForm() {
     const allergies = Array.from(document.querySelectorAll('.allergyInput')).map(input => input.value);
     const medications = Array.from(document.querySelectorAll('.medicationField')).map(div => {
@@ -398,22 +316,4 @@ function submitForm() {
         alert('An error occurred while updating the profile.');
     });
 
-
-
-    //   document.addEventListener('DOMContentLoaded', function() {
-    //     fetchUserData();
-    //     fetchBookedAppointments();
-    //     document.getElementById('editProfileButton').addEventListener('click', openEditModal);
-    //     document.querySelector('.close-button').addEventListener('click', function() {
-    //         document.getElementById('editModal').style.display = "none";
-    //     });
-    // });
-
 }
-
-
-    
-
-
-    //Fetch booked appointments!
-
