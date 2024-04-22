@@ -86,10 +86,10 @@ function displayBookedAppointments(appointments) {
     }
 
     let appointmentHTML = appointments.map(appointment => `
-        <div>
-            <p>Doctor: ${appointment.doctor.name}</p>
+        <div class="appointment-card">
             <p>Date: ${new Date(appointment.date).toLocaleDateString()}</p>
             <p>Time: ${appointment.time}</p>
+            <p>Doctor: ${appointment.doctor.name}</p>
         </div>
     `).join('');
 
