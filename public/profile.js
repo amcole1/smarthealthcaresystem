@@ -79,7 +79,7 @@ function fetchBookedAppointments() {
 }
 
 function displayBookedAppointments(appointments) {
-    const appointmentsContainer = document.getElementById('appointmentsContainer');
+    const appointmentsContainer = document.getElementById('bookedAppointmentsContainer');
     if (appointments.length === 0) {
         appointmentsContainer.innerHTML = '<p>No booked appointments.</p>';
         return;
